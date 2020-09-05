@@ -5,9 +5,9 @@ Android HTTP traffic Proxy setting tool
 This tool is a proxy configuration tool that takes advantage of Android VPNService feature. 
 Only the communication from the specified application can be acquired.
 
-## how to use
+## how to use it
 
-When you start the TunProxy application, the following screen will be launched.
+When you start the ProxyMe application, the following screen will be launched.
 
 ![Tun Proxy](images/1.png)
 
