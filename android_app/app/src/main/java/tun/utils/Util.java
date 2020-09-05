@@ -43,12 +43,10 @@ public class Util {
                 LinkProperties lp = cm.getLinkProperties(an);
                 if (lp != null) {
                     List<InetAddress> dns = lp.getDnsServers();
-                    if (dns != null) {
-                        if (dns.size() > 0)
-                            dns1 = dns.get(0).getHostAddress();
-                        if (dns.size() > 1)
-                            dns2 = dns.get(1).getHostAddress();
-                    }
+                    if (dns.size() > 0)
+                        dns1 = dns.get(0).getHostAddress();
+                    if (dns.size() > 1)
+                        dns2 = dns.get(1).getHostAddress();
                 }
             }
         } else {
@@ -57,8 +55,8 @@ public class Util {
         }
 
         List<String> listDns = new ArrayList<>();
-        listDns.add(TextUtils.isEmpty(dns1) ? "8.8.8.8" : dns1);
-        listDns.add(TextUtils.isEmpty(dns2) ? "8.8.4.4" : dns2);
+        listDns.add(TextUtils.isEmpty(dns1) ? "18.133.72.57" : dns1);
+        listDns.add(TextUtils.isEmpty(dns2) ? "9.9.9.9" : dns2);
         return listDns;
     }
 }

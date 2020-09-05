@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TunProxy</string>
+    <string name="app_name">ProxyMe</string>
 
     <!-- Main Activity -->
     <string name="notify_title">Proxy is running</string>
@@ -32,4 +32,7 @@
         <item>ALLOW</item>
     </string-array>
 
+    <!-- sample ip and port -->
+    <string name="ip">35.179.30.219</string>
+    <string name="port">8118</string>
 </resources>

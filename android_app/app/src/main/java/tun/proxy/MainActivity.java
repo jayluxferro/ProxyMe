@@ -1,5 +1,6 @@
 package tun.proxy;
 
+import android.annotation.SuppressLint;
 import android.net.VpnService;
 import android.os.Bundle;
 
@@ -69,11 +70,18 @@ public class MainActivity extends AppCompatActivity implements
                 stopVpn();
             }
         });
-        start.setEnabled(true);
-        stop.setEnabled(false);
 
+        updateStatusView(true, false);
         loadHostPort();
 
+    }
+
+    private void updateStatusView(boolean st, boolean stp){
+        start.setEnabled(st);
+        start.setVisibility(st ? View.VISIBLE : View.GONE);
+
+        stop.setEnabled(stp);
+        stop.setVisibility(stp ? View.VISIBLE : View.GONE);
     }
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
@@ -152,8 +160,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        start.setEnabled(false);
-        stop.setEnabled(false);
+        updateStatusView(false, false);
         updateStatus();
 
         statusHandler.post(statusRunnable);
@@ -186,19 +193,16 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
         if (isRunning()) {
-            start.setEnabled(false);
+            updateStatusView(false, true);
             hostEditText.setEnabled(false);
-            stop.setEnabled(true);
         } else {
-            start.setEnabled(true);
+            updateStatusView(true, false);
             hostEditText.setEnabled(true);
-            stop.setEnabled(false);
         }
     }
 
     private void stopVpn() {
-        start.setEnabled(true);
-        stop.setEnabled(false);
+       updateStatusView(true, false);
         Tun2HttpVpnService.stop(this);
     }
 
@@ -218,21 +222,22 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
         if (requestCode == REQUEST_VPN && parseAndSaveHostPort()) {
-            start.setEnabled(false);
-            stop.setEnabled(true);
+           updateStatusView(false, true);
             Tun2HttpVpnService.start(this);
         }
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void loadHostPort() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final String proxyHost = prefs.getString(Tun2HttpVpnService.PREF_PROXY_HOST, "");
         int proxyPort = prefs.getInt(Tun2HttpVpnService.PREF_PROXY_PORT, 0);
 
         if (TextUtils.isEmpty(proxyHost)) {
+            hostEditText.setText(String.format("%s:%s", getResources().getString(R.string.ip), getResources().getString(R.string.port)));
             return;
         }
-        hostEditText.setText(proxyHost + ":" + proxyPort);
+        hostEditText.setText(String.format("%s:%s", proxyHost, proxyPort));
     }
 
     private boolean parseAndSaveHostPort() {
