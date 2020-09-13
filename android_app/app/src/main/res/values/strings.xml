@@ -22,7 +22,7 @@
     <string name="pref_dialog_clear_all_application_msg">Clear all selections of Allowed / Disallowed application list</string>
 
     <string name="pref_vpn_connection_mode">Allowed / Disallowed Application</string>
-    <string name="loading">Prease wait</string>
+    <string name="loading">Please wait</string>
     <string-array name="pref_vpn_connection_name">
         <item>Disallowed Application</item>
         <item>Allowed Application</item>

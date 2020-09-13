@@ -12,9 +12,9 @@
       "filters": [],
       "properties": [],
       "versionCode": 100000,
-      "versionName": "1.2.5",
+      "versionName": "1.0.0",
       "enabled": true,
-      "outputFile": "TunProxy_v1.2.5.apk"
+      "outputFile": "ProxyMe_v1.0.0.apk"
     }
   ]
 }
