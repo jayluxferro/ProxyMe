@@ -23,8 +23,8 @@ When you start the ProxyMe application, the following screen will be launched.
 ![Tun Proxy](images/2.png)
 
 ## menu
-
-Application settings can be made from the menu icon (![Menu](images/3.png)) at the top of the screen.
+![Menu](images/3.png).
+Application settings can be made from the menu icon at the top of the screen.
 
 ### Settings
 
