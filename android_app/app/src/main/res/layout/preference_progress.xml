@@ -32,17 +32,6 @@
             android:indeterminateTint="@color/cardview_dark_background"
             android:layout_gravity="center" />
 
-        <TextView
-            android:id="@+id/progressTitle"
-            android:text="@string/loading"
-            android:textSize="24sp"
-            android:textColor="@color/cardview_dark_background"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@+id/progressBar" />
-
         <!-- (end) I added this part. -->
 
         <TextView android:id="@+id/title"

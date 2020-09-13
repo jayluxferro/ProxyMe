@@ -493,19 +493,22 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-            this.searchView.clearFocus();
-            if (!query.trim().isEmpty()) {
-                filter(query);
-                return true;
-            } else {
-                filter("");
-                return true;
-            }
+            return searchFilter(query);
         }
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            return false;
+           return searchFilter(newText);
+        }
+
+        private boolean searchFilter(String newText){
+            if (!newText.trim().isEmpty()) {
+                filter(newText);
+            } else {
+                filter("");
+                return false;
+            }
+            return true;
         }
 
         @Override
