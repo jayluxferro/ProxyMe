@@ -33,6 +33,6 @@
     </string-array>
 
     <!-- sample ip and port -->
-    <string name="ip">167.99.122.57</string>
-    <string name="port">7071</string>
+    <string name="ip">127.0.0.1</string>
+    <string name="port">8080</string>
 </resources>
