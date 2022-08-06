@@ -35,4 +35,5 @@
     <!-- sample ip and port -->
     <string name="ip">127.0.0.1</string>
     <string name="port">8080</string>
+    <string name="background_image">background_image</string>
 </resources>

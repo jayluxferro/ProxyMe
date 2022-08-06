@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "sperixlabs.proxyme",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 100000,
+      "versionName": "1.0.0",
+      "outputFile": "ProxyMe_v1.0.0.apk"
+    }
+  ],
+  "elementType": "File"
+}
