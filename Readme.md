@@ -63,14 +63,11 @@ Display application version
 ### Build APK
  gradlew build
 
-## base application
+## Base Application
 
-Most of the code was created based on the following applications for creating applications.
+Most of the codes were adopted from https://github.com/raise-isayan/TunProxy
 
-* forked from raise-isayan/TunProxy
-  * https://github.com/raise-isayan/TunProxy
 
 ## Development environment
 
-* JRE(JDK) 1.8 or later(Open JDK)
-* AndroidStudio 3.6.1 (https://developer.android.com/studio/index.html)
+* AndroidStudio (https://developer.android.com/studio/index.html)
