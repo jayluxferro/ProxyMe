@@ -6,15 +6,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
 import android.os.RemoteException;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -152,23 +152,21 @@ public class Tun2HttpVpnService extends VpnService {
         builder.setMtu(mtu);
 
         // AAdd list of allowed and disallowed applications
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            MyApplication app = (MyApplication) this.getApplication();
-            if (app.loadVPNMode() == MyApplication.VPNMode.DISALLOW) {
-                Set<String> disallow = app.loadVPNApplication(MyApplication.VPNMode.DISALLOW);
-                Log.d(TAG, "disallowed:" + disallow.size());
-                List<String> notFoundPackageList = new ArrayList<>();
-                builder.addDisallowedApplication(Arrays.asList(disallow.toArray(new String[0])), notFoundPackageList);
-                disallow.removeAll(notFoundPackageList);
-                MyApplication.getInstance().storeVPNApplication(MyApplication.VPNMode.DISALLOW, disallow);
-            } else {
-                Set<String> allow = app.loadVPNApplication(MyApplication.VPNMode.ALLOW);
-                Log.d(TAG, "allowed:" + allow.size());
-                List<String> notFoundPackageList = new ArrayList<>();
-                builder.addAllowedApplication(Arrays.asList(allow.toArray(new String[0])), notFoundPackageList);
-                allow.removeAll(notFoundPackageList);
-                MyApplication.getInstance().storeVPNApplication(MyApplication.VPNMode.ALLOW, allow);
-            }
+        MyApplication app = (MyApplication) this.getApplication();
+        if (app.loadVPNMode() == MyApplication.VPNMode.DISALLOW) {
+            Set<String> disallow = app.loadVPNApplication(MyApplication.VPNMode.DISALLOW);
+            Log.d(TAG, "disallowed:" + disallow.size());
+            List<String> notFoundPackageList = new ArrayList<>();
+            builder.addDisallowedApplication(Arrays.asList(disallow.toArray(new String[0])), notFoundPackageList);
+            disallow.removeAll(notFoundPackageList);
+            MyApplication.getInstance().storeVPNApplication(MyApplication.VPNMode.DISALLOW, disallow);
+        } else {
+            Set<String> allow = app.loadVPNApplication(MyApplication.VPNMode.ALLOW);
+            Log.d(TAG, "allowed:" + allow.size());
+            List<String> notFoundPackageList = new ArrayList<>();
+            builder.addAllowedApplication(Arrays.asList(allow.toArray(new String[0])), notFoundPackageList);
+            allow.removeAll(notFoundPackageList);
+            MyApplication.getInstance().storeVPNApplication(MyApplication.VPNMode.ALLOW, allow);
         }
 
         // Add list of allowed applications

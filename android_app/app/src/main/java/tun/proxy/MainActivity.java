@@ -1,17 +1,23 @@
 package tun.proxy;
 
 import android.annotation.SuppressLint;
-import android.net.VpnService;
-import android.os.Bundle;
-
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.VpnService;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,19 +26,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
-
 import tun.proxy.service.Tun2HttpVpnService;
-import tun.utils.CertificateUtil;
 import tun.utils.IPUtil;
 
 public class MainActivity extends AppCompatActivity implements
@@ -58,18 +52,8 @@ public class MainActivity extends AppCompatActivity implements
         stop = findViewById(R.id.stop);
         hostEditText = findViewById(R.id.host);
 
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startVpn();
-            }
-        });
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopVpn();
-            }
-        });
+        start.setOnClickListener(v -> startVpn());
+        stop.setOnClickListener(v -> stopVpn());
 
         updateStatusView(true, false);
         loadHostPort();
