@@ -100,13 +100,15 @@ class Tun2SocksVpnService : VpnService() {
         Log.d(TAG, "startVpn: $proxyDetails")
         proxyData = proxyDetails
         val builder = Builder()
-            .addAddress("10.0.0.2", 24)
+            .addAddress("10.1.10.1", 32)
+            .addAddress( "fd00:1:fd00:1:fd00:1:fd00:1", 128)
             .addRoute("0.0.0.0", 0)
+            .addRoute("0:0:0:0:0:0:0:0", 0)
             .setMtu(1500)
-            .setSession(packageName)
+            .setSession(getString(R.string.app_name))
 
 
-        // AAdd list of allowed and disallowed applications
+        // TODO: Add list of allowed and disallowed applications
         val app = this.application as MyApplication
         if (app.loadVPNMode() == MyApplication.VPNMode.DISALLOW) {
             val disallowedApps = app.loadVPNApplication(MyApplication.VPNMode.DISALLOW)
@@ -124,6 +126,9 @@ class Tun2SocksVpnService : VpnService() {
             }
             MyApplication.getInstance().storeVPNApplication(MyApplication.VPNMode.ALLOW, allowedApps)
         }
+
+        // exclude this app
+        builder.addDisallowedApplication(packageName)
 
         try {
             vpnInterface = builder.establish()
