@@ -1,6 +1,5 @@
 package tun.proxy;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,19 +7,22 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.SearchView;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.*;
-
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.*;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,8 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
@@ -92,29 +92,26 @@ public class SettingsActivity extends AppCompatActivity {
             setHasOptionsMenu(true);
 
             /* Allowed / Disallowed Application */
-            final ListPreference prefPackage = (ListPreference) this.findPreference(VPN_CONNECTION_MODE);
-            final PreferenceScreen prefDisallow = (PreferenceScreen) findPreference(VPN_DISALLOWED_APPLICATION_LIST);
-            final PreferenceScreen prefAllow = (PreferenceScreen) findPreference(VPN_ALLOWED_APPLICATION_LIST);
-            final PreferenceScreen clearAllSelection = (PreferenceScreen) findPreference(VPN_CLEAR_ALL_SELECTION);
+            final ListPreference prefPackage = findPreference(VPN_CONNECTION_MODE);
+            final PreferenceScreen prefDisallow = findPreference(VPN_DISALLOWED_APPLICATION_LIST);
+            final PreferenceScreen prefAllow = findPreference(VPN_ALLOWED_APPLICATION_LIST);
+            final PreferenceScreen clearAllSelection = findPreference(VPN_CLEAR_ALL_SELECTION);
             clearAllSelection.setOnPreferenceClickListener(this);
 
-            prefPackage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object value) {
-                if (preference instanceof ListPreference) {
-                    final ListPreference listPreference = (ListPreference) preference;
-                    int index = listPreference.findIndexOfValue((String) value);
-                    prefDisallow.setEnabled(index == MyApplication.VPNMode.DISALLOW.ordinal());
-                    prefAllow.setEnabled(index == MyApplication.VPNMode.ALLOW.ordinal());
+            prefPackage.setOnPreferenceChangeListener((preference, value) -> {
+            if (preference instanceof ListPreference) {
+                final ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue((String) value);
+                prefDisallow.setEnabled(index == MyApplication.VPNMode.DISALLOW.ordinal());
+                prefAllow.setEnabled(index == MyApplication.VPNMode.ALLOW.ordinal());
 
-                    // Set the summary to reflect the new value.
-                    preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+                // Set the summary to reflect the new value.
+                preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
 
-                    MyApplication.VPNMode mode =  MyApplication.VPNMode.values()[index];
-                    MyApplication.getInstance().storeVPNMode(mode);
-                }
-                return true;
-                }
+                MyApplication.VPNMode mode =  MyApplication.VPNMode.values()[index];
+                MyApplication.getInstance().storeVPNMode(mode);
+            }
+            return true;
             });
             prefPackage.setSummary(prefPackage.getEntry());
             prefDisallow.setEnabled(MyApplication.VPNMode.DISALLOW.name().equals(prefPackage.getValue()));
@@ -124,8 +121,8 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void updateMenuItem() {
-            final PreferenceScreen prefDisallow = (PreferenceScreen) findPreference(VPN_DISALLOWED_APPLICATION_LIST);
-            final PreferenceScreen prefAllow = (PreferenceScreen) findPreference(VPN_ALLOWED_APPLICATION_LIST);
+            final PreferenceScreen prefDisallow = findPreference(VPN_DISALLOWED_APPLICATION_LIST);
+            final PreferenceScreen prefAllow = findPreference(VPN_ALLOWED_APPLICATION_LIST);
 
             int countDisallow = MyApplication.getInstance().loadVPNApplication(MyApplication.VPNMode.DISALLOW).size();
             int countAllow = MyApplication.getInstance().loadVPNApplication(MyApplication.VPNMode.ALLOW).size();
@@ -167,21 +164,18 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class DisallowedPackageListFragment extends PackageListFragment {
         public DisallowedPackageListFragment() {
             super(MyApplication.VPNMode.DISALLOW);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class AllowedPackageListFragment extends PackageListFragment  {
         public AllowedPackageListFragment() {
             super(MyApplication.VPNMode.ALLOW);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected static class PackageListFragment extends PreferenceFragmentCompat
             implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
         private final Map<String, Boolean> mAllPackageInfoMap = new HashMap<>();
