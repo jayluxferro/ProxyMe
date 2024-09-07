@@ -108,7 +108,7 @@ class Tun2SocksVpnService : VpnService() {
             .setSession(getString(R.string.app_name))
 
 
-        // TODO: Add list of allowed and disallowed applications
+        // Add list of allowed and disallowed applications
         val app = this.application as MyApplication
         if (app.loadVPNMode() == MyApplication.VPNMode.DISALLOW) {
             val disallowedApps = app.loadVPNApplication(MyApplication.VPNMode.DISALLOW)

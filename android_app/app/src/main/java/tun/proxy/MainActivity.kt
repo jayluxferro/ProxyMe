@@ -11,7 +11,6 @@ import android.net.Uri
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
@@ -36,7 +35,6 @@ class MainActivity : AppCompatActivity(),
     private var start: Button? = null
     private var stop: Button? = null
     private var hostEditText: EditText? = null
-    private var statusHandler: Handler = Handler()
     private var utils: Utils? = null
     private var service: Tun2SocksVpnService? = null
     private val TAG = "${BuildConfig.APPLICATION_ID}->${this.javaClass.simpleName}"
@@ -56,8 +54,8 @@ class MainActivity : AppCompatActivity(),
         stop = findViewById(R.id.stop)
         hostEditText = findViewById(R.id.host)
 
-        start!!.setOnClickListener { startVpn(this, parseAndSaveHostPort()!!) }
-        stop!!.setOnClickListener { stopVpn(this) }
+        start?.setOnClickListener { startVpn(this, parseProxy(this)!!) }
+        stop?.setOnClickListener { stopVpn(this) }
 
         updateStatusView(st = true, stp = false)
         loadHostPort()
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-   override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val item = menu.findItem(R.id.action_activity_settings)
         item.setEnabled(start!!.isEnabled)
         return true
@@ -109,7 +107,7 @@ class MainActivity : AppCompatActivity(),
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-           R.id.action_activity_settings -> {
+            R.id.action_activity_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
             }
@@ -169,36 +167,53 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun setHostPort() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this).edit()
-        prefs.putString(PREF_USER_CONFIG, hostEditText!!.text.toString())
-        prefs.putString(PREF_FORMATTED_CONFIG, parseAndSaveHostPort()!!)
-        prefs.commit()
-    }
-
-    private fun parseAndSaveHostPort(): String? {
-        val userConfig = hostEditText!!.text.toString()
-
-        val regex = """(?:(socks5|http)://)?(?:(\w+):(\w+)@)?([\d.]+):(\d+)""".toRegex()
-        val matchResult = regex.find(userConfig) ?: throw IllegalArgumentException("Invalid proxy format")
-
-        val (proxyType, proxyUser, proxyPass, proxyHost, proxyPort) = matchResult.destructured
-
-        val proxyData = ProxyData(
-            proxyType = if (proxyType.isNotEmpty()) proxyType else "http",
-            proxyUser = proxyUser.takeIf { it.isNotEmpty() },
-            proxyPass = proxyPass.takeIf { it.isNotEmpty() },
-            proxyHost = proxyHost,
-            proxyPort = proxyPort.toInt()
-        )
-
-        return buildString {
-            append("${proxyData.proxyType}://")
-            if (proxyData.proxyUser != null && proxyData.proxyPass != null) {
-                append("${proxyData.proxyUser}:${proxyData.proxyPass}@")
-            }
-            append("${proxyData.proxyHost}:${proxyData.proxyPort}")
+        val proxyDetails = parseProxy(this)
+        if (proxyDetails != null) {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(this).edit()
+            prefs.putString(PREF_USER_CONFIG, hostEditText!!.text.toString())
+            prefs.putString(PREF_FORMATTED_CONFIG, proxyDetails)
+            prefs.commit()
         }
     }
+
+    private fun parseProxy(context: Context): String? {
+        try {
+            if (hostEditText == null) {
+                Toast.makeText(context, "Invalid proxy format", Toast.LENGTH_SHORT).show()
+                return null
+            }
+            val input = hostEditText!!.text.trim()
+            val regex = """(?:(socks5|http)://)?(?:(\w+):(\w+)@)?([\d.]+):(\d+)""".toRegex()
+            val matchResult = regex.find(input)
+
+            if (matchResult == null) {
+                // Display a toast message instead of throwing an exception
+                Toast.makeText(context, "Invalid proxy format", Toast.LENGTH_SHORT).show()
+                return null // Return null
+            }
+
+            val (proxyType, proxyUser, proxyPass, proxyHost, proxyPort) = matchResult.destructured
+
+            val proxyData = ProxyData(
+                proxyType = if (proxyType.isNotEmpty()) proxyType else "http",
+                proxyUser = proxyUser.takeIf { it.isNotEmpty() },
+                proxyPass = proxyPass.takeIf { it.isNotEmpty() },
+                proxyHost = proxyHost,
+                proxyPort = proxyPort.toInt()
+            )
+
+            return buildString {
+                append("${proxyData.proxyType}://")
+                if (proxyData.proxyUser != null && proxyData.proxyPass != null) {
+                    append("${proxyData.proxyUser}:${proxyData.proxyPass}@")
+                }
+                append("${proxyData.proxyHost}:${proxyData.proxyPort}")
+            }
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
 
     companion object {
         const val REQUEST_VPN: Int = 1
@@ -232,11 +247,16 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun stopVpn(context: Context) {
-        val intent = Intent(context, Tun2SocksVpnService::class.java)
-        intent.setAction(ACTION_STOP_SERVICE)
-        context.startService(intent)
-        val result = context.stopService(intent)
-        Log.d(TAG, "stopService: state:$result")
+        try {
+            val intent = Intent(context, Tun2SocksVpnService::class.java)
+            intent.setAction(ACTION_STOP_SERVICE)
+            context.startService(intent)
+            val result = context.stopService(intent)
+            Log.d(TAG, "stopService: state:$result")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         updateStatusView(st = true, stp = false)
     }
 
@@ -250,7 +270,11 @@ class MainActivity : AppCompatActivity(),
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "This app requires notification permission", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "This app requires notification permission",
+                    Toast.LENGTH_SHORT
+                ).show()
                 startNotificationSetting()
             }
         }
