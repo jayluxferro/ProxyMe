@@ -5,6 +5,43 @@ Android HTTP traffic Proxy setting tool
 This tool is a proxy configuration tool that takes advantage of Android VPNService feature. 
 Only the communication from the specified application can be acquired.
 
+## Supported Proxy Protocols
+
+This application supports two proxy protocol types: `HTTP` and `SOCKS5`. By default, if the protocol is not specified, `HTTP` is assumed.
+
+### Supported Input Formats
+
+The application can parse and handle various proxy configurations in the following formats:
+
+1. **IP Address and Port Only (HTTP is assumed by default)**:
+   - Example: `10.10.10.1:8080`
+
+2. **Explicit HTTP Protocol**:
+   - Example: `http://10.10.10.1:8080`
+
+3. **Explicit SOCKS5 Protocol**:
+   - Example: `socks5://10.10.10.1:8080`
+
+4. **HTTP with Username and Password**:
+   - Example: `http://username:password@10.10.10.1:8080`
+
+5. **SOCKS5 with Username and Password**:
+   - Example: `socks5://username:password@10.10.10.1:8080`
+
+### Examples of Supported Inputs
+
+| Input Format                                         | Protocol Type |
+|------------------------------------------------------|---------------|
+| `10.10.10.1:8080`                                    | HTTP (default)|
+| `http://10.10.10.1:8080`                             | HTTP          |
+| `socks5://10.10.10.1:8080`                           | SOCKS5        |
+| `http://username:password@10.10.10.1:8080`           | HTTP          |
+| `socks5://username:password@10.10.10.1:8080`         | SOCKS5        |
+
+### Handling Invalid Formats
+
+If an invalid proxy format is provided, the application will display a notification (via a Toast) informing the user of the incorrect format.
+
 ## How to use it
 
 When you start the ProxyMe application, the following screen will be launched.
@@ -63,9 +100,11 @@ Display application version
 ### Build APK
  gradlew build
 
-## Base Application
 
-Most of the codes were adopted from https://github.com/raise-isayan/TunProxy
+## Acknowledgments
+
+1. https://github.com/raise-isayan/TunProxy
+2. https://github.com/ys1231/appproxy
 
 
 ## Development environment

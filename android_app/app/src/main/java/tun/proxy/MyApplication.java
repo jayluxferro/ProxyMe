@@ -23,10 +23,10 @@ public class MyApplication extends Application {
         instance = this;
     }
 
-    public enum VPNMode {DISALLOW, ALLOW};
-    public enum AppSortBy {APPNAME, PKGNAME};
-    public enum AppOrderBy {ASC, DESC};
-    public enum AppFiltertBy {APPNAME, PKGNAME};
+    public enum VPNMode {DISALLOW, ALLOW}
+    public enum AppSortBy {APPNAME, PKGNAME}
+    public enum AppOrderBy {ASC, DESC}
+    public enum AppFiltertBy {APPNAME, PKGNAME}
 
     public VPNMode loadVPNMode() {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -38,7 +38,6 @@ public class MyApplication extends Application {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREF_VPN_MODE, mode.name()).apply();
-        return;
     }
 
     public Set<String> loadVPNApplication(VPNMode mode) {
@@ -51,7 +50,6 @@ public class MyApplication extends Application {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(PREF_APP_KEY[mode.ordinal()], set).apply();
-        return;
     }
 
 }
