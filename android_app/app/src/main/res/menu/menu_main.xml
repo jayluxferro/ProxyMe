@@ -2,20 +2,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tun.proxy.MainActivity">
-    <!--
+
     <item
-        android:id="@+id/save_profile"
-        android:orderInCategory="99"
-        android:icon="@android:drawable/ic_menu_save"
-        android:title="@string/title_activity_settings"
-        app:showAsAction="always" />
+        android:id="@+id/action_test_proxy"
+        android:orderInCategory="90"
+        android:title="@string/btn_test"
+        app:showAsAction="never" />
+
     <item
-        android:id="@+id/load_profile"
-        android:orderInCategory="99"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="@string/title_activity_settings"
-        app:showAsAction="always" />
-    -->
+        android:id="@+id/action_connection_log"
+        android:orderInCategory="91"
+        android:title="@string/btn_log"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rotation"
+        android:orderInCategory="89"
+        android:title="@string/btn_rotation"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_import"
+        android:orderInCategory="92"
+        android:title="@string/btn_import"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_activity_settings"
@@ -26,5 +36,7 @@
     <item
         android:id="@+id/action_show_about"
         android:orderInCategory="101"
-        android:title="@string/title_show_about"/>
+        android:title="@string/title_show_about"
+        app:showAsAction="never" />
+
 </menu>

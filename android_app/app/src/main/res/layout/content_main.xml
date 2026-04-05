@@ -1,50 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="tun.proxy.MainActivity"
-    android:background="@color/colorPrimary"
-    tools:showIn="@layout/activity_main">
+    tools:context="tun.proxy.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent">
+        android:padding="20dp">
 
-        <EditText
-            android:id="@+id/host"
-            android:layout_width="wrap_content"
+        <!-- Status Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/status_card"
+            style="@style/Widget.ProxyMe.Card"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="@string/host_hint"
-            android:inputType="text"
-            android:maxLines="1"
-            android:minWidth="60dp"
-            android:minHeight="48dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorHint="#26C6DA"
-            android:autofillHints="" />
+            android:layout_marginBottom="20dp">
 
-        <Button
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <View
+                    android:id="@+id/status_dot"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/bg_status_dot"
+                    android:contentDescription="@string/status_indicator_desc" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/status_progress"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="0dp"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/colorWarning"
+                    app:indicatorSize="16dp"
+                    app:trackThickness="2dp" />
+
+                <TextView
+                    android:id="@+id/status_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="@string/status_disconnected"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/status_proxy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnBackground"
+                    android:textSize="12sp"
+                    tools:text="socks5://***@1.2.3.4:1080" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Proxy Input Card -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.ProxyMe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:letterSpacing="0.1"
+                    android:text="@string/proxy_address_label"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorOnBackground"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/host_layout"
+                    style="@style/Widget.ProxyMe.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/host"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/host_hint"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Save / Load buttons row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_save"
+                        style="@style/Widget.ProxyMe.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/btn_new_config"
+                        android:textSize="13sp"
+                        app:icon="@android:drawable/ic_input_add"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/colorSecondary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_load"
+                        style="@style/Widget.ProxyMe.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/btn_saved_configs"
+                        android:textSize="13sp"
+                        app:icon="@android:drawable/ic_menu_recent_history"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/colorSecondary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Connect Button -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="@string/start" />
+            style="@style/Widget.ProxyMe.Button.Connect"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_connect" />
 
-        <Button
+        <!-- Disconnect Button -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:background="@drawable/button_red"
-            android:text="@string/stop" />
+            style="@style/Widget.ProxyMe.Button.Disconnect"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_disconnect"
+            android:visibility="gone" />
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

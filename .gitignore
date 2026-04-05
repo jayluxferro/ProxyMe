@@ -48,3 +48,5 @@ buck-out/
 /*.swp
 /*.com
 /*.save
+git-push
+/build-output

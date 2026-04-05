@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:key="vpn_connection_setting"
-        android:title="VPN connection setting"
+        android:title="@string/vpn_connection_setting"
         android:enabled="true">
         <ListPreference
             android:key="vpn_connection_mode"
@@ -12,21 +12,7 @@
             android:entryValues="@array/pref_vpn_connection_value"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"/>
-<!--
-        <Preference
-            android:fragment="tun.proxy.SettingsActivity$ApplicationListFragment"
-            android:key="vpn_disallowed_application_list"
-            android:title="@string/pref_header_disallowed_application_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <Preference
-            android:fragment="tun.proxy.SettingsActivity$ApplicationListFragment"
-            android:key="vpn_allowed_application_list"
-            android:title="@string/pref_header_allowed_application_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
--->
         <PreferenceScreen
             android:fragment="tun.proxy.SettingsActivity$DisallowedPackageListFragment"
             android:key="vpn_disallowed_application_list"
@@ -43,7 +29,7 @@
 
         <PreferenceScreen
             android:key="vpn_clear_all_selection"
-            android:title="Clear all selection" />
+            android:title="@string/clear_all_selection" />
 
     </PreferenceCategory>
 </PreferenceScreen>

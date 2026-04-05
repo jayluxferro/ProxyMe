@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#42454a</color>
-    <color name="colorPrimaryDark">#464541</color>
-    <color name="colorRed">#c42f27</color>
-    <color name="white">#fff</color>
-    <color name="accent">#fbd208</color>
+    <color name="colorPrimary">#1B2838</color>
+    <color name="colorPrimaryDark">#0F1923</color>
+    <color name="colorSecondary">#4FC3F7</color>
+    <color name="colorSurface">#1E2D3D</color>
+    <color name="colorBackground">#152232</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnSurface">#ECEFF1</color>
+    <color name="colorOnBackground">#90A4AE</color>
+    <color name="colorError">#EF5350</color>
+    <color name="colorSuccess">#66BB6A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="colorSecondaryVariant">#0288D1</color>
+    <color name="colorInputBackground">#1A2F42</color>
+    <color name="colorWarning">#FFA726</color>
+    <color name="colorHandle">#40ECEFF1</color>
+    <color name="colorStroke">#4DECEFF1</color>
+    <color name="colorCardAlt">#162736</color>
 </resources>

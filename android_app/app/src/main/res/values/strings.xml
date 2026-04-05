@@ -4,11 +4,167 @@
     <!-- Main Activity -->
     <string name="notify_title">Proxy is running</string>
     <string name="notify_msg">Proxy is running</string>
+    <string name="notify_vpn_active">VPN active — routing traffic through proxy</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="msg_start_failed">Start failed</string>
-    <string name="host_hint">Proxy address (ipv4:port)</string>
+    <string name="host_hint">e.g. socks5://user:pass@192.168.1.1:1080</string>
     <string name="enter_host">Enter valid ip v4 address</string>
+
+    <!-- Status -->
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_connecting">Connecting\u2026</string>
+    <string name="btn_connect">Connect</string>
+    <string name="btn_disconnect">Disconnect</string>
+
+    <!-- Saved Configs -->
+    <string name="btn_save_config">Save</string>
+    <string name="btn_new_config">New Config</string>
+    <string name="btn_saved_configs">My Configs</string>
+    <string name="saved_configs_title">Saved Configurations</string>
+    <string name="config_saved">Configuration saved</string>
+    <string name="config_updated">Configuration updated</string>
+    <string name="config_deleted">Configuration deleted</string>
+    <string name="config_loaded">Loaded: %s</string>
+    <string name="empty_saved_configs">No saved configurations</string>
+    <string name="btn_add_new">Add New</string>
+
+    <!-- Add/Edit Config Form -->
+    <string name="add_config_title">Add Configuration</string>
+    <string name="edit_config_title">Edit Configuration</string>
+    <string name="protocol_label">Protocol</string>
+    <string name="host_label">Host</string>
+    <string name="port_label">Port</string>
+    <string name="auth_toggle_label">Requires Authentication</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="config_name_label">Configuration Name</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_undo">Undo</string>
+
+    <!-- Validation Errors -->
+    <string name="error_host_required">Host address is required</string>
+    <string name="error_host_invalid">Invalid host address</string>
+    <string name="error_port_invalid">Port must be between 1 and 65535</string>
+    <string name="error_port_required">Port is required</string>
+    <string name="error_username_required">Username is required when authentication is enabled</string>
+    <string name="error_password_required">Password is required when authentication is enabled</string>
+    <string name="error_name_required">Configuration name is required</string>
+    <string name="invalid_proxy_format">Invalid proxy format</string>
+    <string name="error_empty_input">Please enter a proxy address</string>
+    <string name="error_bad_format">Expected format: [protocol://][user:pass@]host:port</string>
+    <string name="error_port_range">Port must be between 1 and 65535</string>
+
+    <!-- Disconnect Confirmation -->
+    <string name="disconnect_confirm_title">Disconnect VPN?</string>
+    <string name="disconnect_confirm_message">This will stop routing traffic through the proxy.</string>
+
+    <!-- Connection errors -->
+    <string name="vpn_connection_failed">Connection failed: %s</string>
+
+    <!-- Notifications -->
+    <string name="notification_permission_granted">Notification permission granted</string>
+    <string name="notification_permission_required">This app requires notification permission</string>
+
+    <!-- Clipboard detection -->
+    <string name="clipboard_detected">Proxy detected on clipboard</string>
+    <string name="clipboard_action_use">Use</string>
+    <string name="clipboard_action_save">Save</string>
+
+    <!-- Import -->
+    <string name="btn_import">Import</string>
+    <string name="import_title">Import Configurations</string>
+    <string name="import_hint">Paste JSON array, proxy URLs (one per line), or a subscription URL.</string>
+    <string name="import_input_hint">Paste config data here</string>
+    <string name="import_success">Imported %d configuration(s)</string>
+    <string name="import_partial">Imported %1$d of %2$d (%3$d errors)</string>
+    <string name="import_failed">Import failed: %s</string>
+    <string name="import_empty">No valid configurations found</string>
+
+    <!-- Failover -->
+    <string name="failover_label">Backup Proxy (optional)</string>
+    <string name="failover_hint">Used if primary proxy fails</string>
+    <string name="failover_activated">Primary proxy failed — switched to backup</string>
+
+    <!-- Network -->
+    <string name="network_reconnecting">Network restored — reconnecting VPN\u2026</string>
+
+    <!-- QR import -->
+    <string name="qr_import_failed">Invalid QR code — could not import configuration</string>
+
+    <!-- Connection Log -->
+    <string name="log_title">Connection Log</string>
+    <string name="log_empty">No connection history yet</string>
+    <string name="btn_clear">Clear</string>
+    <string name="btn_export">Export</string>
+    <string name="export_empty">No log entries to export</string>
+    <string name="btn_log">Log</string>
+    <string name="health_testing">Testing connection\u2026</string>
+    <string name="health_success">Proxy reachable (%dms latency)</string>
+    <string name="health_failed">Proxy unreachable: %s</string>
+    <string name="btn_test">Test</string>
+
+    <!-- Proxy Rotation -->
+    <string name="rotation_title">Proxy Rotation</string>
+    <string name="rotation_interval_label">Rotate every</string>
+    <string name="rotation_order_label">Rotation order</string>
+    <string name="rotation_empty">No configs added to rotation yet</string>
+    <string name="rotation_add_config">Add Config to Rotation</string>
+    <string name="rotation_remove">Remove from rotation</string>
+    <string name="rotation_started">Rotation started — %d configs</string>
+    <string name="rotation_stopped">Rotation stopped</string>
+    <string name="rotation_need_configs">Add at least 2 configs to rotate</string>
+    <string name="rotation_pick_title">Select Config</string>
+    <string name="rotation_already_added">Already in rotation list</string>
+    <string name="rotation_next_in">Next rotation in %s</string>
+    <string name="rotation_status_active">Rotating (%1$d/%2$d)</string>
+    <string name="btn_rotation">Rotation</string>
+    <string-array name="rotation_intervals">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+    </string-array>
+
+    <!-- Quick Settings Tile -->
+    <string name="tile_connected">VPN Active</string>
+    <string name="tile_disconnected">VPN Off — Tap to open</string>
+
+    <!-- Accessibility -->
+    <string name="status_indicator_desc">Connection status indicator</string>
+    <string name="content_desc_delete">Delete configuration</string>
+    <string name="content_desc_edit">Edit configuration</string>
+    <string name="content_desc_share">Share configuration</string>
+    <string name="qr_share_title">Share Configuration</string>
+    <string name="qr_share_hint">Scan this QR code with another device running ProxyMe to import this configuration.</string>
+    <string name="btn_share">Share</string>
+    <string name="tap_to_use">Tap to use</string>
+
+    <!-- Badges -->
+    <string name="badge_http">HTTP</string>
+    <string name="badge_socks5">SOCKS5</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome">Welcome to ProxyMe</string>
+    <string name="onboarding_subtitle">Route your Android traffic through any HTTP or SOCKS5 proxy in three simple steps.</string>
+    <string name="onboarding_step1_title">Enter your proxy</string>
+    <string name="onboarding_step1_desc">Type an address or tap New Config to build one with the form.</string>
+    <string name="onboarding_step2_title">Tap Connect</string>
+    <string name="onboarding_step2_desc">Accept the VPN permission and your traffic starts routing through the proxy.</string>
+    <string name="onboarding_step3_title">Save and share</string>
+    <string name="onboarding_step3_desc">Save configs for quick switching. Share them via QR code with your team.</string>
+    <string name="onboarding_cta">Get Started</string>
+
+    <!-- About -->
+    <string name="about_tagline">Simple, lightweight proxy routing for Android. Route any app\'s traffic through HTTP or SOCKS5 proxies.</string>
+    <string name="about_built_by">Built by</string>
+    <string name="about_author">SperixLabs</string>
+    <string name="about_github">View on GitHub</string>
+    <string name="about_github_url">https://github.com/jayluxferro/ProxyMe</string>
 
     <!-- Main menu -->
     <string name="title_show_about">About</string>
@@ -36,4 +192,9 @@
     <string name="ip">127.0.0.1</string>
     <string name="port">8080</string>
     <string name="background_image">background_image</string>
+    <string name="proxy_address_label">Proxy Address</string>
+
+    <!-- Settings -->
+    <string name="vpn_connection_setting">VPN connection setting</string>
+    <string name="clear_all_selection">Clear all selection</string>
 </resources>

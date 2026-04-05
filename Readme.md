@@ -1,112 +1,192 @@
-Android HTTP traffic Proxy setting tool
-=============
+# ProxyMe
 
+A simple, lightweight Android proxy configuration tool. Route any app's traffic through HTTP or SOCKS5 proxies using Android's VPN Service.
 
-This tool is a proxy configuration tool that takes advantage of Android VPNService feature. 
-Only the communication from the specified application can be acquired.
+## Features
 
-## Supported Proxy Protocols
+### Core
+- **HTTP & SOCKS5** proxy support with optional authentication
+- **Per-app routing** — choose which apps go through the proxy (allow or disallow mode)
+- **Hostname & IP support** — connect using IP addresses or domain names
 
-This application supports two proxy protocol types: `HTTP` and `SOCKS5`. By default, if the protocol is not specified, `HTTP` is assumed.
+### Configuration Management
+- **Saved configurations** — create, edit, and switch between proxy configs via a form-based UI
+- **QR code sharing** — generate a QR code for any saved config; scan with any QR reader to import
+- **Deep link import** — `proxyme://` URI scheme for one-tap config import
+- **Bulk import** — paste JSON arrays, proxy URLs, or subscription data to import multiple configs at once
+- **Clipboard detection** — copies a proxy URL? The app detects it and offers to use it
 
-### Supported Input Formats
+### Reliability
+- **Proxy failover** — set a backup proxy that activates automatically if the primary fails
+- **Network-aware auto-reconnect** — VPN reconnects automatically when network drops and restores
+- **Proxy health check** — test if a proxy is reachable before connecting (Menu > Test)
+- **Proxy rotation** — automatically cycle through a list of saved configs on a schedule (5min to 4hr intervals)
 
-The application can parse and handle various proxy configurations in the following formats:
+### Security
+- **Encrypted storage** — all saved configs, credentials, and logs use AES-256 encrypted SharedPreferences
+- **Credential masking** — passwords are never shown in the UI, notifications, or logs
+- **Silent notification** — VPN status notification shows no proxy details, includes a Disconnect action button
 
-1. **IP Address and Port Only (HTTP is assumed by default)**:
-   - Example: `10.10.10.1:8080`
+### Extras
+- **Quick Settings tile** — toggle VPN from the notification shade without opening the app
+- **Home screen widget** — glanceable connection status with one-tap access
+- **Connection log** — timestamped history of connect/disconnect/fail events, exportable to CSV
+- **First-run onboarding** — guided setup on first launch
+- **Material Design** — clean, dark-themed interface with Material Components
 
-2. **Explicit HTTP Protocol**:
-   - Example: `http://10.10.10.1:8080`
+## Screenshots
 
-3. **Explicit SOCKS5 Protocol**:
-   - Example: `socks5://10.10.10.1:8080`
+| Main Screen | Connected | New Config |
+|:-----------:|:---------:|:----------:|
+| ![Main](images/main.png) | ![Connected](images/connected.png) | ![New Config](images/new_config.png) |
 
-4. **HTTP with Username and Password**:
-   - Example: `http://username:password@10.10.10.1:8080`
+| My Configs | Settings | About |
+|:----------:|:--------:|:-----:|
+| ![My Configs](images/my_configs.png) | ![Settings](images/settings.png) | ![About](images/about.png) |
 
-5. **SOCKS5 with Username and Password**:
-   - Example: `socks5://username:password@10.10.10.1:8080`
+## Getting Started
 
-### Examples of Supported Inputs
+### Requirements
 
-| Input Format                                         | Protocol Type |
-|------------------------------------------------------|---------------|
-| `10.10.10.1:8080`                                    | HTTP (default)|
-| `http://10.10.10.1:8080`                             | HTTP          |
-| `socks5://10.10.10.1:8080`                           | SOCKS5        |
-| `http://username:password@10.10.10.1:8080`           | HTTP          |
-| `socks5://username:password@10.10.10.1:8080`         | SOCKS5        |
+- Android 6.0 (API 23) or later
+- Java 17 (for building)
 
-### Handling Invalid Formats
+### Build
 
-If an invalid proxy format is provided, the application will display a notification (via a Toast) informing the user of the incorrect format.
+```bash
+# Build both debug and release APKs
+./build.sh
 
-## How to use it
+# Or build manually
+cd android_app
+./gradlew assembleDebug assembleRelease
+```
 
-When you start the ProxyMe application, the following screen will be launched.
+APKs are output to `build-output/`.
 
-![Tun Proxy](images/1.png)
+## Usage
 
-* Proxy address (ipv4:port)
-  * Specify the destination proxy server in the format **IPv4 address:port number**.
-    The IP address must be described in IPv4 format.
+### Quick Start
 
-* [Start] button
-  * Start the VPN service.
-* [Stop] button
-  * Stop the VPN service.
+1. Enter a proxy address in the input field (e.g. `192.168.1.1:8080`)
+2. Tap **Connect**
+3. Accept the VPN permission prompt
 
-![Tun Proxy](images/2.png)
+### Proxy Formats
 
-## Menu
+The app accepts proxy addresses in several formats:
 
-![Menu](images/3.png)
+| Format | Example |
+|--------|---------|
+| Host and port (defaults to HTTP) | `10.10.10.1:8080` |
+| Hostname and port | `proxy.example.com:8080` |
+| HTTP | `http://10.10.10.1:8080` |
+| SOCKS5 | `socks5://10.10.10.1:8080` |
+| HTTP with auth | `http://user:pass@10.10.10.1:8080` |
+| SOCKS5 with auth | `socks5://user:pass@10.10.10.1:8080` |
 
-Application settings can be made from the menu icon at the top of the screen.
+### Saved Configurations
 
-### Settings
+Instead of typing proxy addresses every time, you can save and manage configurations:
 
-Configure VPN service settings.
+1. Tap **New Config** to open the configuration form
+2. Select the protocol (HTTP or SOCKS5)
+3. Enter host, port, and optional authentication credentials
+4. Give it a name and tap **Save**
 
-![Menu Settings](images/3.png) ⇒ ![Menu Settings](images/4.png)
+To use a saved config:
+- Tap **My Configs** to see all saved configurations
+- Tap a config card to load it into the proxy input, ready to connect
+- Tap the pencil icon to edit, share icon for QR code, or trash icon to delete
 
-There are two modes, Disallowed Application and Allowed Application, but you can not specify them at the same time.
-Because of this you will have to choose whether you want to run in either mode.
-The default is **Disallowed Application** selected.
+### QR Code Sharing
 
-* Disallowed Application
-  * Select the application you want to exclude from VPN service.
-    The selected application will no longer go through VPN service and behave the same as if you do not use VPN.
+Share proxy configs with others without typing:
 
-* Allowed Application
-  * Select the application for which you want to perform VPN service.
-    The selected application will now go through VPN service.
-    Applications that are not selected behave the same as when not using VPN.
-    In addition, if none of them are selected, communication of all applications will go through VPN.
+1. Open **My Configs** and tap the share icon on any config
+2. A QR code appears — the other person scans it with their phone's camera
+3. ProxyMe auto-opens on their device with the config pre-filled
 
-* Clear all selection
-  * Clear all selections of Allowed / Disallowed application list.
+### Proxy Rotation
 
+Automatically cycle through multiple proxies on a timer:
 
+1. Open **Menu > Rotation**
+2. Add 2 or more saved configs to the rotation list
+3. Set the interval (5 min to 4 hours)
+4. Toggle on — the VPN starts and automatically switches proxies at each interval
 
-### About
-Display application version
+### Bulk Import
 
-## Operating environment
+Import multiple proxy configs at once via **Menu > Import**:
 
-* Android 5.0 (API Level 21) or later
+- **JSON array**: `[{"host":"1.2.3.4","port":8080,"protocol":"http","name":"Proxy 1"}]`
+- **Proxy URLs** (one per line): `socks5://user:pass@host:port`
+- Accepts flexible field names: `host`/`server`, `port`, `user`/`username`, `pass`/`password`, `name`/`remarks`
 
-### Build APK
- gradlew build
+### App Filtering
 
+Control which apps use the proxy via **Menu > Settings**:
+
+- **Disallowed Application** (default) — all apps use the proxy *except* the ones you select
+- **Allowed Application** — *only* the apps you select use the proxy
+
+### Connection Log
+
+View connection history via **Menu > Log**:
+
+- Timestamped events: Connected, Disconnected, Failed
+- Duration and error details
+- Export to CSV via the **Export** button
+
+## Project Structure
+
+```
+android_app/
+  app/src/main/
+    java/tun/proxy/
+      MainActivity.kt              # Main UI and VPN control
+      SettingsActivity.java         # App filtering settings
+      MyApplication.java            # Global state
+      service/
+        Tun2SocksVpnService.kt      # VPN service with foreground notification
+        VpnState.kt                 # Connection state enum + broadcast constants
+        VpnTileService.kt           # Quick Settings tile
+        NetworkMonitor.kt           # Network change detection for auto-reconnect
+        ProxyRotationManager.kt     # Scheduled proxy rotation logic
+        RotationReceiver.kt         # AlarmManager broadcast receiver for rotation
+      model/
+        ProxyConfig.kt              # Saved configuration data model
+        ProxyData.kt                # Proxy URL parsing model
+        ConnectionEvent.kt          # Connection log entry model
+      repository/
+        ConfigRepository.kt         # Encrypted config persistence (AES-256)
+        ConnectionLogRepository.kt  # Encrypted connection log persistence
+      adapter/
+        SavedConfigsAdapter.kt      # Saved configs list adapter
+        ConnectionLogAdapter.kt     # Connection log list adapter
+        RotationConfigAdapter.kt    # Rotation config list adapter
+      util/
+        QrGenerator.kt              # QR code generation + URI encoding
+        ProxyHealthCheck.kt         # TCP socket reachability test
+        ClipboardProxyDetector.kt   # Clipboard monitoring for proxy URLs
+        ConfigImporter.kt           # Multi-format bulk config import
+      widget/
+        VpnWidgetProvider.kt        # Home screen widget
+    res/
+      layout/                       # UI layouts (12 files)
+      values/                       # Colors, strings, styles
+      drawable/                     # Icons and shape drawables
+      xml/                          # Widget info, preferences, network security
+      color/                        # Color state lists for toggle buttons
+      menu/                         # Toolbar menus
+```
 
 ## Acknowledgments
 
-1. https://github.com/raise-isayan/TunProxy
-2. https://github.com/ys1231/appproxy
+- [TunProxy](https://github.com/raise-isayan/TunProxy)
+- [appproxy](https://github.com/ys1231/appproxy)
 
+## License
 
-## Development environment
-
-* AndroidStudio (https://developer.android.com/studio/index.html)
+See [LICENSE](LICENSE) for details.

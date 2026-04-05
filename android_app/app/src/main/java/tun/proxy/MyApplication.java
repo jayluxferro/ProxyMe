@@ -26,7 +26,7 @@ public class MyApplication extends Application {
     public enum VPNMode {DISALLOW, ALLOW}
     public enum AppSortBy {APPNAME, PKGNAME}
     public enum AppOrderBy {ASC, DESC}
-    public enum AppFiltertBy {APPNAME, PKGNAME}
+
 
     public VPNMode loadVPNMode() {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

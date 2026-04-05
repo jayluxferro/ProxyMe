@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurface"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="40dp">
+
+    <!-- Handle bar -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_handle" />
+
+    <!-- App Icon -->
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/ic_launcher" />
+
+    <!-- App Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:letterSpacing="0.15"
+        android:text="@string/app_name"
+        android:textColor="@color/colorOnSurface"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <!-- Version -->
+    <TextView
+        android:id="@+id/about_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/colorOnBackground"
+        android:textSize="14sp" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorStroke" />
+
+    <!-- Tagline -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="@string/about_tagline"
+        android:textColor="@color/colorOnBackground"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.4" />
+
+    <!-- Author row -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_built_by"
+            android:textColor="@color/colorOnBackground"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/about_author"
+            android:textColor="@color/colorSecondary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- GitHub link -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/about_github"
+        style="@style/Widget.ProxyMe.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_github"
+        android:textSize="13sp" />
+
+</LinearLayout>

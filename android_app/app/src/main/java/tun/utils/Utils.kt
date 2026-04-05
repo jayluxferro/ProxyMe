@@ -1,50 +1,45 @@
 package tun.utils
 
 import android.content.Context
-import android.content.pm.ApplicationInfo.FLAG_SYSTEM
-import android.content.pm.PackageInfo
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.PixelFormat
-import android.graphics.drawable.Drawable
-import android.util.Log
-import tun.proxy.BuildConfig
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 
-class Utils(private val context: Context) {
-    private val TAG = "${BuildConfig.APPLICATION_ID}->${this.javaClass.simpleName} "
-    val sharedPreferences = context.getSharedPreferences("vpnconfig", Context.MODE_PRIVATE)
+class Utils(context: Context) {
+    val sharedPreferences: SharedPreferences
 
     init {
-        Log.d(TAG, ": Utils init !")
+        val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        sharedPreferences = EncryptedSharedPreferences.create(
+            "vpnconfig_encrypted",
+            masterKey,
+            context,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+        migrateFromPlain(context)
     }
 
-    private val PackageInfo.isSystemApp: Boolean
-        get() = applicationInfo.flags and FLAG_SYSTEM != 0
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        val bitmapWidth = drawable.intrinsicWidth
-        val bitmapHeight = drawable.intrinsicHeight
-        val bitmapConfig =
-            if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
-        val bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, bitmapConfig)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
+    private fun migrateFromPlain(context: Context) {
+        val old = context.getSharedPreferences("vpnconfig", Context.MODE_PRIVATE)
+        if (old.contains("vpnStatus")) {
+            sharedPreferences.edit()
+                .putBoolean("vpnStatus", old.getBoolean("vpnStatus", false))
+                .putString("proxyName", old.getString("proxyName", ""))
+                .apply()
+            old.edit().clear().apply()
+        }
     }
 
-    public fun setVpnStatus(status: Boolean){
-        val edit = sharedPreferences.edit()
-        edit.putBoolean("vpnStatus", status)
-        edit.commit()
+    fun setVpnStatus(status: Boolean) {
+        sharedPreferences.edit().putBoolean("vpnStatus", status).apply()
     }
-    public fun getVpnStatus(): Boolean{
+
+    fun getVpnStatus(): Boolean {
         return sharedPreferences.getBoolean("vpnStatus", false)
     }
-    public fun setProxyName(name: String){
-        val edit = sharedPreferences.edit()
-        edit.putString("proxyName", name)
-        edit.commit()
+
+    fun setProxyName(name: String) {
+        sharedPreferences.edit().putString("proxyName", name).apply()
     }
 }
-
